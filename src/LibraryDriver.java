@@ -31,8 +31,12 @@ public class LibraryDriver {
         // Display header once
         System.out.println("****************************************");
         System.out.println("WELCOME TO LIBRARY MANAGEMENT SYSTEM\n");
-        System.out.println("Developed by: Your Name, Student ID: 12345678");
-        System.out.println("OODP101 Object Oriented Design and Programming - Assignment");
+        System.out.println("    Developed by: GROUP 3");
+        System.out.println("    ---------------------------------------");
+        System.out.println("    • Rafi Miazi (K250249) - Team Leader");
+        System.out.println("    • Utsav Paudel (K250066)");
+        System.out.println("    • Thi Phuong Thanh (K123456)");
+        System.out.println("OODP101 Object Oriented Design and Programming - Group Assignment");
         System.out.println("Date: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
         System.out.println("****************************************");
 
