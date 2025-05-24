@@ -35,7 +35,7 @@ public class LibraryDriver {
         System.out.println("    ---------------------------------------");
         System.out.println("    • Rafi Miazi (K250249) - Team Leader");
         System.out.println("    • Utsav Paudel (K250066)");
-        System.out.println("    • Thi Phuong Thanh (K123456)");
+        System.out.println("    • Thi Phuong Thanh bui (K250200)");
         System.out.println("OODP101 Object Oriented Design and Programming - Group Assignment");
         System.out.println("Date: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
         System.out.println("****************************************");
