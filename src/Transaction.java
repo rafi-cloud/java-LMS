@@ -3,6 +3,7 @@ public class Transaction {
     private Member member;
     private Book book;
     private LocalDate borrowDate;
+    private LocalDate returnDate;
 
 
     public Transaction(Member member, Book book) {
