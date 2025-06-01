@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class Library {
-    private ArrayList<Book> books;
+    private static ArrayList<Book> books;
     private ArrayList<Member> members;
 
     public Library() {
@@ -9,7 +9,7 @@ public class Library {
         members = new ArrayList<>();
     }
 
-    public void addBook(Book book) { books.add(book); }
+    public static void addBook(Book book) { books.add(book); }
 
     public void removeBook(String ISBN) {
         books.removeIf(book -> book.getISBN().equals(ISBN));
@@ -35,14 +35,19 @@ public class Library {
         return null;
     }
 
-    public boolean borrowBook(int memberID, String ISBN) {
+    public void borrowBook(int memberID, String ISBN) {
         Member member = findMember(memberID);
         Book book = findBook(ISBN);
-        if (member != null && book != null && member.addBook(book)) {
-            books.remove(book);
-            return true;
+        if (member != null && book != null ) {
+            if (member.addBook(book)) {
+                System.out.println("Book borrowed successfully.");
+                Transaction t = new Transaction(member, book);
+                System.out.println(t.toString());
+            }else {
+                System.out.println("Borrowing limit reached. Cannot borrow more books.");
+            }
         }
-        return false;
+        System.out.println("Invalid ISBN or member found. Cannot borrow books.");
     }
 
     public double returnBook(int memberID, String ISBN, int daysOverdue) {

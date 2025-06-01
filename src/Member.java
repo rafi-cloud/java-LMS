@@ -5,6 +5,7 @@ public class Member {
     private String name;
     private String membershipType;
     private ArrayList<Book> borrowedBooks;
+    private ArrayList<Transaction> borrowedTransactions;
 
     public Member() {
         this.memberID = 0;
@@ -46,6 +47,11 @@ public class Member {
 
     public void removeBook(Book book) {
         borrowedBooks.remove(book);
+    }
+
+    public ArrayList<Transaction> getBorrowedTransactions() { return borrowedTransactions; }
+    public void addTransaction(Transaction transaction) {
+        borrowedTransactions.add(transaction);
     }
 
     public double calculateLateFee(Book book, int daysOverdue) {

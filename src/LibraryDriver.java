@@ -3,7 +3,37 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class LibraryDriver {
+
+
+
+    public static boolean adminCheck () {
+
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Checking Admin Privilege...");
+        System.out.println("Admin Privilege = REQUIRED");
+        System.out.print("\n Enter Admin ID: ");
+        String adminID = sc.next();
+
+        if (adminID.equals("admin")) {
+            System.out.print(" Enter Admin Password: ");
+            String adminPassword = sc.next();
+            if (adminPassword.equals("admin")) {
+                System.out.println(" Admin Privilege Granted.");
+                System.out.println();
+                return true;
+            }
+            System.out.println("Invalid Admin Password");
+            return false;
+        }
+        System.out.println("Invalid Admin ID");
+        return false;
+    }
+
+
     public static void main(String[] args) {
+
+        boolean hasAdminPrivilege = false;
+
         Scanner sc = new Scanner(System.in);
         Library library = new Library();
 
@@ -45,7 +75,12 @@ public class LibraryDriver {
             System.out.println("\nMain Menu:");
             System.out.println("1. Borrow a book");
             System.out.println("2. Return a book");
-            System.out.println("3. Exit");
+            System.out.println("3. Add Book");
+            System.out.println("4. Remove Book");
+            System.out.println("5. Add Member");
+            System.out.println("6. Remove Member");
+            System.out.println("7. View Transactions");
+            System.out.println("8. Exit");
             System.out.print("Enter your choice: ");
 
             int mainChoice = sc.nextInt();
@@ -54,12 +89,6 @@ public class LibraryDriver {
                 case 1: // Borrow
                     System.out.print("Enter your Member ID: ");
                     int borrowMemberID = sc.nextInt();
-                    Member borrowMember = library.findMember(borrowMemberID);
-
-                    if (borrowMember == null) {
-                        System.out.println("Invalid Member ID.");
-                        break;
-                    }
 
                     System.out.println("Available books:");
                     for (Book book : library.getBooks()) {
@@ -67,20 +96,7 @@ public class LibraryDriver {
                     }
                     System.out.print("Enter ISBN of the book to borrow: ");
                     String borrowIsbn = sc.next();
-                    Book selectedBook = library.findBook(borrowIsbn);
-
-                    if (selectedBook != null) {
-                        boolean success = borrowMember.addBook(selectedBook);
-                        if (success) {
-                            Transaction t = new Transaction(borrowMember, selectedBook);
-                            System.out.println("Book borrowed successfully.");
-                            System.out.println(t);
-                        } else {
-                            System.out.println("Borrowing limit reached. Cannot borrow more books.");
-                        }
-                    } else {
-                        System.out.println("Book not found with ISBN: " + borrowIsbn);
-                    }
+                    library.borrowBook(borrowMemberID, borrowIsbn);
                     break;
 
                 case 2: // Return
@@ -108,8 +124,83 @@ public class LibraryDriver {
                         System.out.println("Return failed. Book not found in your borrowed list.");
                     }
                     break;
+                case 3:
+                    if (!hasAdminPrivilege) {
+                        if(adminCheck()) {
+                            hasAdminPrivilege = true;
+                        }else{
+                            System.out.println("Access denied. Please try again.");
+                            break;
+                        }
+                    }else {
+                        System.out.println("Checking Admin Privilege");
+                        System.out.println("Admin Privilege = OK\n");
+                    }
+                    System.out.println("=== Enter book information ===");
 
-                case 3: // Exit
+                    // ISBN input
+                    System.out.print("Enter ISBN (3 digits): ");
+                    String ISBN = sc.next();
+
+                    // Title input
+                    System.out.print("Enter book title: ");
+                    String title = sc.next();
+                    sc.nextLine(); // Consume remaining newline
+
+                    // Author input
+                    System.out.print("Enter author name: ");
+                    String author = sc.nextLine();
+
+                    // Category input
+                    System.out.print("Enter book category: ");
+                    String category = sc.nextLine();
+
+                    // Price input
+                    System.out.print("Enter price: ");
+                    double price = sc.nextDouble();
+
+                    // Create Book object
+                    Book newBook = new Book(ISBN, title, author, category, price);
+                    Library.addBook(newBook);
+
+                    System.out.println("\nNew Book Added:");
+                    System.out.println("Available books:");
+                    for (Book book : library.getBooks()) {
+                        System.out.println(book);
+                    }
+
+                    break;
+                case 4:
+                    if (!hasAdminPrivilege) {
+                        if(adminCheck()) {
+                            hasAdminPrivilege = true;
+                        }else{
+                            System.out.println("Access denied. Please try again.");
+                            break;
+                        }
+                    }else {
+                        System.out.println("Checking Admin Privilege");
+                        System.out.println("Admin Privilege = OK\n");
+                    }
+                    sc.nextLine();
+                    System.out.println("Select Book to Remove:");
+                    for (Book book : library.getBooks()) {
+                        System.out.println(book);
+                    }
+                    System.out.print("Enter ISBN (3 digits): ");
+                    String isbn = sc.nextLine();
+                    library.removeBook(isbn);
+                    System.out.println("Book Removed\n");
+                    System.out.println("Available books:");
+                    for (Book book : library.getBooks()) {
+                        System.out.println(book);
+                    }
+                    break;
+
+                case 5:
+                case 6:
+                case 7:
+                case 8: // Exit
                     running = false;
                     System.out.println("Thank you for using the Library Management System. Goodbye!");
                     break;
