@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Library {
@@ -42,6 +43,7 @@ public class Library {
             if (member.addBook(book)) {
                 System.out.println("Book borrowed successfully.");
                 Transaction t = new Transaction(member, book);
+                member.addTransaction(t);
                 System.out.println(t.toString());
             }else {
                 System.out.println("Borrowing limit reached. Cannot borrow more books.");

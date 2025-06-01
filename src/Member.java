@@ -12,6 +12,7 @@ public class Member {
         this.name = "";
         this.membershipType = "Regular";
         this.borrowedBooks = new ArrayList<>();
+        this.borrowedTransactions = new ArrayList<>();
     }
 
     public Member(int memberID, String name, String membershipType) {
@@ -19,6 +20,7 @@ public class Member {
         this.name = name;
         this.membershipType = membershipType;
         this.borrowedBooks = new ArrayList<>();
+        this.borrowedTransactions = new ArrayList<>();
     }
 
     public int getMemberID() { return memberID; }
@@ -61,6 +63,6 @@ public class Member {
 
     @Override
     public String toString() {
-        return "ID: " + memberID + " | Name: " + name + " | Type: " + membershipType + "\nBorrowed Books: " + borrowedBooks;
+        return "ID: " + memberID + " | Name: " + name + " | Type: " + membershipType + "\nBorrowed Books: " + borrowedBooks + "\n";
     }
 }

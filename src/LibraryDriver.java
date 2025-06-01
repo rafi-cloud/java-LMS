@@ -29,7 +29,9 @@ public class LibraryDriver {
         return false;
     }
 
-
+    private static boolean isValidMembershipType(String type) {
+        return type.equals("GUEST") || type.equals("REGULAR") || type.equals("PREMIUM");
+    }
     public static void main(String[] args) {
 
         boolean hasAdminPrivilege = false;
@@ -198,8 +200,85 @@ public class LibraryDriver {
                     break;
 
                 case 5:
+                    if (!hasAdminPrivilege) {
+                        if(adminCheck()) {
+                            hasAdminPrivilege = true;
+                        }else{
+                            System.out.println("Access denied. Please try again.");
+                            break;
+                        }
+                    }else {
+                        System.out.println("Checking Admin Privilege");
+                        System.out.println("Admin Privilege = OK\n");
+                    }
+
+                    System.out.println("=== Add New Member ===");
+
+                    // Get member ID with validation
+                    int memberID = 0;
+                    while (true) {
+                        System.out.print("Enter member ID (numbers only): ");
+                        if (sc.hasNextInt()) {
+                            memberID = sc.nextInt();
+                            sc.nextLine(); // Consume newline
+                            break;
+                        } else {
+                            System.out.println("Invalid input! Please enter numbers only.");
+                            sc.nextLine(); // Clear invalid input
+                        }
+                    }
+                    // Get member name with validation
+                    String name = "";
+                    while (name.trim().isEmpty()) {
+                        System.out.print("Enter member name: ");
+                        name = sc.nextLine();
+                        if (name.trim().isEmpty()) {
+                            System.out.println("Name cannot be empty!");
+                        }
+                    }
+                    String membershipType = "";
+                    while (!isValidMembershipType(membershipType)) {
+                        System.out.print("Enter membership type (GUEST/REGULAR/PREMIUM): ");
+                        membershipType = sc.nextLine().toUpperCase();
+                        if (!isValidMembershipType(membershipType)) {
+                            System.out.println("Invalid type! Must be GUEST, REGULAR or PREMIUM.");
+                        }
+                    }
+
+                    Member member = new Member(memberID, name, membershipType);
+                    library.registerMember(member);
+                    System.out.println("\nNew member added successfully:");
+                    break;
                 case 6:
-                case 7:
+                    if (!hasAdminPrivilege) {
+                        if(adminCheck()) {
+                            hasAdminPrivilege = true;
+                        }else{
+                            System.out.println("Access denied. Please try again.");
+                            break;
+                        }
+                    }else {
+                        System.out.println("Checking Admin Privilege");
+                        System.out.println("Admin Privilege = OK\n");
+                    }
+                    System.out.println("Enter Member ID to remove: ");
+                    int mID = sc.nextInt();
+                    if(library.findMember(mID) == null) {
+                        System.out.println("Member not found! Please try again.");
+                    }else {
+                        library.removeMember(mID);
+                        System.out.println("Member removed\n");
+                    }
+                    break;
+                case 7: // view transactions
+                    System.out.println("Enter Member ID to view transaction history: ");
+                    int ID = sc.nextInt();
+                    if (library.findMember(ID) != null) {
+                        System.out.println("Member ID = VALID");
+                        System.out.println(library.findMember(ID));
+                        System.out.println(library.findMember(ID).getBorrowedTransactions());
+                    }
+
                 case 8: // Exit
                     running = false;
                     System.out.println("Thank you for using the Library Management System. Goodbye!");
